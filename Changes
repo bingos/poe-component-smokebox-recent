@@ -1,6 +1,9 @@
 Changelog for POE::Component::SmokeBox::Recent
 ==============================================
 
+1.16	Tue Apr  7 20:51:46 BST 2009
+	- Make auto_set_repository() only run at author-time
+
 1.14	Tue Apr  7 12:21:00 BST 2009
 	- Refactored the FTP.pm to remove SIZE query because of weirdness
 	  with cpan.cpantesters.org FTP server.
