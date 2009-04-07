@@ -1,6 +1,10 @@
 Changelog for POE::Component::SmokeBox::Recent
 ==============================================
 
+1.14	Tue Apr  7 12:21:00 BST 2009
+	- Refactored the FTP.pm to remove SIZE query because of weirdness
+	  with cpan.cpantesters.org FTP server.
+
 1.12	Fri Feb  6 11:38:17 GMT 2009
 	- Added detach_myself() which fixes a refcount leak.
 

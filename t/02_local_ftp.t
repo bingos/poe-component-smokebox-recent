@@ -50,11 +50,11 @@ A/AD/ADAMK/YAML-Tiny-1.36.tar.gz
 my %tests = (
    'USER anonymous'     => '331 Any password will work',
    'PASS anon@anon.org' => '230 Any password will work',
-   'SIZE /pub/CPAN/RECENT' => '213 ' . $size,
+#   'SIZE /pub/CPAN/RECENT' => '213 ' . $size,
    'QUIT'               => '221 Goodbye.',
 );
 
-plan tests => 10;
+plan tests => 9;
 
 POE::Session->create(
    package_states => [

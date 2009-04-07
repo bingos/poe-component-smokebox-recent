@@ -9,6 +9,7 @@ inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
+inc/Module/Install/Repository.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 lib/POE/Component/SmokeBox/Recent.pm
@@ -24,11 +25,11 @@ t/01_http.t
 t/01_http_sockerr.t
 t/01_http_timeout.t
 t/01_retr.t
-t/01_retr_error.t
 t/01_retr_sockerr.t
 t/02_local_ftp.t
 t/03_local_http.t
 t/04_live_ftp.t
 t/05_live_http.t
+t/06_cpantesters.t
 xt/99_pod.t
 xt/99_pod_coverage.t

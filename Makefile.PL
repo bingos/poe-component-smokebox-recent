@@ -30,4 +30,5 @@ if ( $value =~ /^y$/i ) {
   print FH "Bleh\n";
   close FH;
 }
+auto_set_repository;
 WriteAll();

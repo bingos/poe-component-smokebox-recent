@@ -45,8 +45,9 @@ sub _start {
   $self->{cmds} = [
      [ '220', 'USER ' . $self->{username} ],
      [ '331', 'PASS ' . $self->{password} ],
-     [ '230', 'SIZE ' . $self->{path} ],
-     [ '213', 'PASV' ],
+#     [ '230', 'SIZE ' . $self->{path} ],
+#     [ '213', 'PASV' ],
+     [ '230', 'PASV' ],
   ];
   if ( $kernel == $sender and !$self->{session} ) {
 	croak "Not called from another POE session and 'session' wasn't set\n";
@@ -136,6 +137,7 @@ sub _cmdc_input {
   return unless $numeric;
   my $cmd = shift @{ $self->{cmds} };
   if ( $cmd and $numeric eq $cmd->[0] ) {
+     warn ">>>>$cmd->[1]\n" if $self->{debug};
      $self->{cmdc}->send_to_server( $cmd->[1] );
      return;
   }
