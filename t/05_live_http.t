@@ -23,7 +23,7 @@ exit 0;
 
 sub _start {
   POE::Component::SmokeBox::Recent->recent(
-      url => 'http://www.cpan.org/',
+      url => 'http://cpan.cpantesters.org/',
       event => 'recent',
       context => 'Blah Blah Blah',
   );

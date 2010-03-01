@@ -9,7 +9,7 @@ use HTTP::Request;
 use File::Spec;
 use vars qw($VERSION);
 
-$VERSION = '1.16';
+$VERSION = '1.18';
 
 sub recent {
   my $package = shift;
@@ -111,8 +111,8 @@ sub _process_ftp {
         Username => 'anonymous',
         Password => 'anon@anon.org',
         address  => $self->{uri}->host,
-	port	 => $self->{uri}->port,
-	path     => File::Spec::Unix->catfile( $self->{uri}->path, 'RECENT' ),
+	      port	   => $self->{uri}->port,
+	      path     => File::Spec::Unix->catfile( $self->{uri}->path, 'RECENT' ),
   );
   return;
 }

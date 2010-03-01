@@ -73,6 +73,13 @@ OUTPUT EVENT
 AUTHOR
     Chris "BinGOs" Williams <chris@bingosnet.co.uk>
 
+LICENSE
+    Copyright "(c)" Chris Williams
+
+    This module may be used, modified, and distributed under the same terms
+    as Perl itself. Please see the license that came with your Perl
+    distribution for details.
+
 KUDOS
     Andy Armstrong for helping me to debug accessing his CPAN mirror.
 

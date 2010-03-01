@@ -3,8 +3,10 @@ use inc::Module::Install;
 name 'POE-Component-SmokeBox-Recent';
 author 'Chris Williams <chris@bingosnet.co.uk>';
 license 'perl';
+auto_license holder => 'Chris Williams';
 version_from 'lib/POE/Component/SmokeBox/Recent.pm';
 abstract_from 'lib/POE/Component/SmokeBox/Recent.pm';
+readme_from 'lib/POE/Component/SmokeBox/Recent.pm';
 author_tests 'xt';
 perl_version '5.006';
 build_requires 'Test::More' => 0.47;
@@ -30,5 +32,6 @@ if ( $value =~ /^y$/i ) {
   print FH "Bleh\n";
   close FH;
 }
-eval "auto_set_repository()";
+githubmeta;
+auto_provides;
 WriteAll();

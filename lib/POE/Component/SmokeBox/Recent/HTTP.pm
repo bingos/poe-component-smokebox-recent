@@ -10,7 +10,7 @@ use HTTP::Request;
 use URI;
 use vars qw($VERSION);
 
-$VERSION = '0.04';
+$VERSION = '1.18';
 
 sub spawn {
   my $package = shift;
