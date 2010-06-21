@@ -3,7 +3,7 @@ use warnings;
 use Test::More;
 use File::Spec;
 
-my $path = File::Spec->rel2abs('./RECENT');
+my $path = File::Spec->rel2abs('.');
 
 plan tests => 4;
 

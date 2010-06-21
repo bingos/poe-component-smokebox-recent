@@ -9,7 +9,7 @@ use HTTP::Request;
 use File::Spec;
 use vars qw($VERSION);
 
-$VERSION = '1.20';
+$VERSION = '1.22';
 
 sub recent {
   my $package = shift;
@@ -149,6 +149,7 @@ sub _get_done {
 sub _process_file {
   my ($kernel,$self) = @_[KERNEL,OBJECT];
   my $path = File::Spec->rel2abs( $self->{uri}->path );
+  $path = File::Spec->catfile( $path, 'RECENT' );
   $self->{wheel} = POE::Wheel::Run->new(
       Program => sub {
         my $path = shift;

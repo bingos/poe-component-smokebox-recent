@@ -50,7 +50,7 @@ CONSTRUCTOR
     recent
         Takes a number of parameters:
 
-          'url', the full url of the CPAN mirror to retrieve the RECENT file from, only http and ftp are currently supported, mandatory;
+          'url', the full url of the CPAN mirror to retrieve the RECENT file from, only http ftp and file are currently supported, mandatory;
           'event', the event handler in your session where the result should be sent, mandatory;
           'session', optional if the poco is spawned from within another session;
           'context', anything you like that'll fit in a scalar, a ref for instance;
@@ -74,10 +74,10 @@ AUTHOR
     Chris "BinGOs" Williams <chris@bingosnet.co.uk>
 
 LICENSE
-    Copyright "(c)" Chris Williams
+    Copyright © Chris Williams
 
     This module may be used, modified, and distributed under the same terms
-    as Perl itself. Please see the license that came with your Perl
+    as Perl 5 itself. Please see the license that came with your Perl 5
     distribution for details.
 
 KUDOS

@@ -1,6 +1,9 @@
 Changelog for POE::Component::SmokeBox::Recent
 ==============================================
 
+1.22  Mon Jun 21 21:08:22 BST 2010
+  - Forgot to append 'RECENT' to file urls.
+
 1.20  Mon Jun 21 10:39:54 BST 2010
   - Added support for file urls, RT #58421 by Nigel Horne
 
