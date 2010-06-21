@@ -3,13 +3,13 @@ package POE::Component::SmokeBox::Recent;
 use strict;
 use warnings;
 use Carp;
-use POE qw(Component::SmokeBox::Recent::HTTP Component::SmokeBox::Recent::FTP);
+use POE qw(Component::SmokeBox::Recent::HTTP Component::SmokeBox::Recent::FTP Wheel::Run);
 use URI;
 use HTTP::Request;
 use File::Spec;
 use vars qw($VERSION);
 
-$VERSION = '1.18';
+$VERSION = '1.20';
 
 sub recent {
   my $package = shift;
@@ -21,10 +21,10 @@ sub recent {
   my $self = bless \%opts, $package;
   $self->{uri} = URI->new( $self->{url} );
   croak "url provided is of an unsupported scheme\n" 
-	unless $self->{uri}->scheme and $self->{uri}->scheme =~ /^(ht|f)tp$/;
+	unless $self->{uri}->scheme and $self->{uri}->scheme =~ /^(ht|f)tp|file$/;
   $self->{session_id} = POE::Session->create(
 	object_states => [
-	   $self => [ qw(_start _process_http _process_ftp _recent) ],
+	   $self => [ qw(_start _process_http _process_ftp _process_file _recent _sig_child) ],
 	   $self => { 
 		      http_sockerr  => '_get_connect_error',
 		      http_timeout  => '_get_connect_error',
@@ -146,6 +146,32 @@ sub _get_done {
   return;
 }
 
+sub _process_file {
+  my ($kernel,$self) = @_[KERNEL,OBJECT];
+  my $path = File::Spec->rel2abs( $self->{uri}->path );
+  $self->{wheel} = POE::Wheel::Run->new(
+      Program => sub {
+        my $path = shift;
+        open my $fh, '<', $path or die "$!\n";
+        while (<$fh>) {
+          print STDOUT $_;
+        }
+        close $fh;
+      },
+      ProgramArgs => [ $path ],
+      StdoutEvent => 'ftp_data',
+  );
+  $kernel->sig_child( $self->{wheel}->PID(), '_sig_child' );
+  return;
+}
+
+sub _sig_child {
+  my ($kernel,$self) = @_[KERNEL,OBJECT];
+  delete $self->{wheel};
+  $kernel->yield( '_recent', 'file' );
+  $kernel->sig_handled();
+}
+
 1;
 __END__
 
@@ -204,7 +230,7 @@ It is part of the SmokeBox toolkit for building CPAN Smoke testing frameworks.
 
 Takes a number of parameters:
 
-  'url', the full url of the CPAN mirror to retrieve the RECENT file from, only http and ftp are currently supported, mandatory;
+  'url', the full url of the CPAN mirror to retrieve the RECENT file from, only http ftp and file are currently supported, mandatory;
   'event', the event handler in your session where the result should be sent, mandatory;
   'session', optional if the poco is spawned from within another session;
   'context', anything you like that'll fit in a scalar, a ref for instance;
@@ -230,9 +256,9 @@ Chris C<BinGOs> Williams <chris@bingosnet.co.uk>
 
 =head1 LICENSE
 
-Copyright C<(c)> Chris Williams
+Copyright E<copy> Chris Williams
 
-This module may be used, modified, and distributed under the same terms as Perl itself. Please see the license that came with your Perl distribution for details.
+This module may be used, modified, and distributed under the same terms as Perl 5 itself. Please see the license that came with your Perl 5 distribution for details.
 
 =head1 KUDOS
 

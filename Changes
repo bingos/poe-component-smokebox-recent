@@ -1,6 +1,9 @@
 Changelog for POE::Component::SmokeBox::Recent
 ==============================================
 
+1.20  Mon Jun 21 10:39:54 BST 2010
+  - Added support for file urls, RT #58421 by Nigel Horne
+
 1.18  Mon Mar  1 10:48:37 GMT 2010
   - Tidied up distribution and Makefile.PL
 
