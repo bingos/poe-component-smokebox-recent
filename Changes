@@ -1,6 +1,9 @@
 Changelog for POE::Component::SmokeBox::Recent
 ==============================================
 
+1.24  Thu Sep  2 14:42:40 BST 2010
+  - Added support for RSS retrieval
+
 1.22  Mon Jun 21 21:08:22 BST 2010
   - Forgot to append 'RECENT' to file urls.
 

@@ -54,10 +54,17 @@ CONSTRUCTOR
           'event', the event handler in your session where the result should be sent, mandatory;
           'session', optional if the poco is spawned from within another session;
           'context', anything you like that'll fit in a scalar, a ref for instance;
+          'rss', set to a 'true' value to retrieve from the rss file instead of RECENT file.
 
         The 'session' parameter is only required if you wish the output
         event to go to a different session than the calling session, or if
         you have spawned the poco outside of a session.
+
+        The 'rss' parameter if set will indicate that the poco should
+        retrieve recent uploads from the "modules/01modules.mtime.rss" file
+        instead of the "RECENT" file. The rss file contains the 150 most
+        recent uploads to CPAN and is more up to date than the "RECENT"
+        file.
 
         The poco does it's work and will return the output event with the
         result.

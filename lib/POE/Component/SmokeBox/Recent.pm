@@ -9,7 +9,7 @@ use HTTP::Request;
 use File::Spec;
 use vars qw($VERSION);
 
-$VERSION = '1.22';
+$VERSION = '1.24';
 
 sub recent {
   my $package = shift;
@@ -17,6 +17,7 @@ sub recent {
   $opts{lc $_} = delete $opts{$_} for keys %opts;
   croak "$package requires a 'url' argument\n" unless $opts{url};
   croak "$package requires an 'event' argument\n" unless $opts{event};
+  $opts{rss} = 0 unless $opts{rss};
   my $options = delete $opts{options};
   my $self = bless \%opts, $package;
   $self->{uri} = URI->new( $self->{url} );
@@ -81,7 +82,8 @@ sub _recent {
 
 sub _process_http {
   my ($kernel,$self) = @_[KERNEL,OBJECT];
-  $self->{uri}->path( File::Spec::Unix->catfile( $self->{uri}->path(), 'RECENT' ) );
+  my @path = $self->{rss} ? ( 'modules', '01modules.mtime.rss' ) : ( 'RECENT' );
+  $self->{uri}->path( File::Spec::Unix->catfile( $self->{uri}->path(), @path ) );
   POE::Component::SmokeBox::Recent::HTTP->spawn(
 	uri => $self->{uri},
   );
@@ -91,11 +93,22 @@ sub _process_http {
 sub _http_response {
   my ($kernel,$self,$response) = @_[KERNEL,OBJECT,ARG0];
   if ( $response->code() == 200 ) {
-    for ( split /\n/, $response->content() ) {
-       next unless /^authors/;
-       next unless /\.(tar\.gz|tgz|tar\.bz2|zip)$/;
-       s!authors/id/!!;
-       push @{ $self->{recent} }, $_;
+    if ( $self->{rss} ) {
+      for ( split /\n/, $response->content() ) {
+        next unless m#<link>(.+?)</link>#i;
+        next unless m#by-authors#i;
+        my ($link) = $_ =~ m#id/(.+?)</link>\s*$#i;
+        next unless $link;
+        unshift @{ $self->{recent} }, $link;
+      }
+    }
+    else {
+      for ( split /\n/, $response->content() ) {
+        next unless /^authors/;
+        next unless /\.(tar\.gz|tgz|tar\.bz2|zip)$/;
+        s!authors/id/!!;
+        push @{ $self->{recent} }, $_;
+      }
     }
   }
   else {
@@ -107,12 +120,13 @@ sub _http_response {
 
 sub _process_ftp {
   my ($kernel,$self) = @_[KERNEL,OBJECT];
+  my @path = $self->{rss} ? ( 'modules', '01modules.mtime.rss' ) : ( 'RECENT' );
   POE::Component::SmokeBox::Recent::FTP->spawn(
         Username => 'anonymous',
         Password => 'anon@anon.org',
         address  => $self->{uri}->host,
 	      port	   => $self->{uri}->port,
-	      path     => File::Spec::Unix->catfile( $self->{uri}->path, 'RECENT' ),
+	      path     => File::Spec::Unix->catfile( $self->{uri}->path, @path ),
   );
   return;
 }
@@ -133,10 +147,19 @@ sub _get_error {
 
 sub _get_data {
   my ($kernel,$self,$data) = @_[KERNEL,OBJECT,ARG0];
-  return unless $data =~ /^authors/i;
-  return unless $data =~ /\.(tar\.gz|tgz|tar\.bz2|zip)$/;
-  $data =~ s!authors/id/!!;
-  push @{ $self->{recent} }, $data;
+  if ( $self->{rss} ) {
+    return unless $data =~ m#<link>(.+?)</link>#i;
+    return unless $data =~ m#by-authors#i;
+    my ($link) = $data =~ m#id/(.+?)</link>\s*$#i;
+    return unless $link;
+    unshift @{ $self->{recent} }, $link;
+  }
+  else {
+    return unless $data =~ /^authors/i;
+    return unless $data =~ /\.(tar\.gz|tgz|tar\.bz2|zip)$/;
+    $data =~ s!authors/id/!!;
+    push @{ $self->{recent} }, $data;
+  }
   return;
 }
 
@@ -235,9 +258,14 @@ Takes a number of parameters:
   'event', the event handler in your session where the result should be sent, mandatory;
   'session', optional if the poco is spawned from within another session;
   'context', anything you like that'll fit in a scalar, a ref for instance;
+  'rss', set to a 'true' value to retrieve from the rss file instead of RECENT file.
 
 The 'session' parameter is only required if you wish the output event to go to a different
 session than the calling session, or if you have spawned the poco outside of a session.
+
+The 'rss' parameter if set will indicate that the poco should retrieve recent uploads from the 
+C<modules/01modules.mtime.rss> file instead of the C<RECENT> file. The rss file contains the 
+150 most recent uploads to CPAN and is more up to date than the C<RECENT> file.
 
 The poco does it's work and will return the output event with the result.
 

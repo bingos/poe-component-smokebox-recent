@@ -26,6 +26,7 @@ sub _start {
       url => 'http://cpan.hexten.net/',
       event => 'recent',
       context => 'Blah Blah Blah',
+      rss => 1,
   );
   return;
 }

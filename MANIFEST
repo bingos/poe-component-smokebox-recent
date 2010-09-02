@@ -30,9 +30,13 @@ t/01_http_timeout.t
 t/01_retr.t
 t/01_retr_sockerr.t
 t/02_local_ftp.t
+t/02_local_ftp_rss.t
 t/03_local_http.t
+t/03_local_http_rss.t
 t/04_live_ftp.t
+t/04_live_ftp_rss.t
 t/05_live_http.t
+t/05_live_http_rss.t
 t/06_cpantesters.t
 t/06_fileurl.t
 xt/99_pod.t

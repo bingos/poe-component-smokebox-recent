@@ -23,9 +23,10 @@ exit 0;
 
 sub _start {
   POE::Component::SmokeBox::Recent->recent(
-      url => 'http://cpan.hexten.net/',
+      url => 'ftp://ftp.funet.fi/pub/CPAN/',
       event => 'recent',
       context => 'Blah Blah Blah',
+      rss => 1,
   );
   return;
 }

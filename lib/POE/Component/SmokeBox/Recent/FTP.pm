@@ -8,7 +8,7 @@ use Test::POE::Client::TCP;
 use Carp qw(carp croak);
 use vars qw($VERSION);
 
-$VERSION = '1.22';
+$VERSION = '1.24';
 
 sub spawn {
   my $package = shift;
