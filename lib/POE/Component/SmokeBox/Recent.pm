@@ -25,7 +25,7 @@ sub recent {
 	unless $self->{uri}->scheme and $self->{uri}->scheme =~ /^(ht|f)tp|file$/;
   $self->{session_id} = POE::Session->create(
 	object_states => [
-	   $self => [ qw(_start _process_http _process_ftp _process_file _recent _sig_child) ],
+	   $self => [ qw(_start _process_http _process_ftp _process_file _recent _sig_child _epoch) ],
 	   $self => { 
 		      http_sockerr  => '_get_connect_error',
 		      http_timeout  => '_get_connect_error',
@@ -62,6 +62,10 @@ sub _start {
   $kernel->refcount_increment( $sender_id, __PACKAGE__ );
   $kernel->detach_myself();
   $self->{sender_id} = $sender_id;
+  if ( $self->{epoch} ) {
+    $kernel->yield( '_epoch' );
+    return;
+  }
   $kernel->yield( '_process_' . $self->{uri}->scheme );
   return;
 }
@@ -154,6 +158,9 @@ sub _get_data {
     return unless $link;
     unshift @{ $self->{recent} }, $link;
   }
+  elsif ( $self->{epoch} ) {
+    push @{ $self->{recent} }, $data;
+  }
   else {
     return unless $data =~ /^authors/i;
     return unless $data =~ /\.(tar\.gz|tgz|tar\.bz2|zip)$/;
@@ -183,6 +190,23 @@ sub _process_file {
         close $fh;
       },
       ProgramArgs => [ $path ],
+      StdoutEvent => 'ftp_data',
+  );
+  $kernel->sig_child( $self->{wheel}->PID(), '_sig_child' );
+  return;
+}
+
+sub _epoch {
+  my ($kernel,$self) = @_[KERNEL,OBJECT];
+  require CPAN::Recent::Uploads;
+  $self->{wheel} = POE::Wheel::Run->new(
+      Program => sub {
+        my $epoch  = shift;
+        my $mirror = shift;
+        print STDOUT $_, "\n" for 
+          CPAN::Recent::Uploads->recent( $epoch, $mirror );
+      },
+      ProgramArgs => [ $self->{epoch}, $self->{uri}->as_string ],
       StdoutEvent => 'ftp_data',
   );
   $kernel->sig_child( $self->{wheel}->PID(), '_sig_child' );
@@ -259,6 +283,7 @@ Takes a number of parameters:
   'session', optional if the poco is spawned from within another session;
   'context', anything you like that'll fit in a scalar, a ref for instance;
   'rss', set to a 'true' value to retrieve from the rss file instead of RECENT file.
+  'epoch', an epoch timestamp less than the current time but greater than an year ago.
 
 The 'session' parameter is only required if you wish the output event to go to a different
 session than the calling session, or if you have spawned the poco outside of a session.
@@ -266,6 +291,11 @@ session than the calling session, or if you have spawned the poco outside of a s
 The 'rss' parameter if set will indicate that the poco should retrieve recent uploads from the 
 C<modules/01modules.mtime.rss> file instead of the C<RECENT> file. The rss file contains the 
 150 most recent uploads to CPAN and is more up to date than the C<RECENT> file.
+
+The 'epoch' parameter should be a valid epoch timestamp less than the current time but greater than
+a year ago. Setting this will cause the component to use L<CPAN::Recent::Uploads> to obtain a list
+of distributions uploaded since the 'epoch' time given. This enables more grandular control of 
+listing dists than simply retrieving the C<RECENT> file.
 
 The poco does it's work and will return the output event with the result.
 

@@ -39,5 +39,6 @@ t/05_live_http.t
 t/05_live_http_rss.t
 t/06_cpantesters.t
 t/06_fileurl.t
+t/06_live_epoch.t
 xt/99_pod.t
 xt/99_pod_coverage.t

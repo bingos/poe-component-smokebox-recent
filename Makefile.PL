@@ -13,6 +13,7 @@ build_requires 'Test::More' => 0.47;
 build_requires 'Test::POE::Server::TCP' => 0.14;
 build_requires 'HTTP::Date' => 0;
 build_requires 'HTTP::Response' => 0;
+requires 'CPAN::Recent::Uploads' => 0.02;
 requires 'URI' => 0;
 requires 'HTTP::Request' => 0;
 requires 'POE' => 0.38;
