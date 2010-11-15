@@ -55,6 +55,7 @@ CONSTRUCTOR
           'session', optional if the poco is spawned from within another session;
           'context', anything you like that'll fit in a scalar, a ref for instance;
           'rss', set to a 'true' value to retrieve from the rss file instead of RECENT file.
+          'epoch', an epoch timestamp less than the current time but greater than an year ago.
 
         The 'session' parameter is only required if you wish the output
         event to go to a different session than the calling session, or if
@@ -65,6 +66,13 @@ CONSTRUCTOR
         instead of the "RECENT" file. The rss file contains the 150 most
         recent uploads to CPAN and is more up to date than the "RECENT"
         file.
+
+        The 'epoch' parameter should be a valid epoch timestamp less than
+        the current time but greater than a year ago. Setting this will
+        cause the component to use CPAN::Recent::Uploads to obtain a list of
+        distributions uploaded since the 'epoch' time given. This enables
+        more grandular control of listing dists than simply retrieving the
+        "RECENT" file.
 
         The poco does it's work and will return the output event with the
         result.
