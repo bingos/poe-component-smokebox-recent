@@ -25,7 +25,7 @@ sub recent {
 	unless $self->{uri}->scheme and $self->{uri}->scheme =~ /^(ht|f)tp|file$/;
   $self->{session_id} = POE::Session->create(
 	object_states => [
-	   $self => [ qw(_start _process_http _process_ftp _process_file _recent _sig_child _epoch) ],
+	   $self => [ qw(_start _process_http _process_ftp _process_file _recent _sig_child _epoch _epoch_fail) ],
 	   $self => { 
 		      http_sockerr  => '_get_connect_error',
 		      http_timeout  => '_get_connect_error',
@@ -178,6 +178,7 @@ sub _get_done {
 
 sub _process_file {
   my ($kernel,$self) = @_[KERNEL,OBJECT];
+  delete $self->{_epoch_fail};
   my $path = File::Spec->rel2abs( $self->{uri}->path );
   $path = File::Spec->catfile( $path, 'RECENT' );
   $self->{wheel} = POE::Wheel::Run->new(
@@ -208,15 +209,25 @@ sub _epoch {
       },
       ProgramArgs => [ $self->{epoch}, $self->{uri}->as_string ],
       StdoutEvent => 'ftp_data',
+      StderrEvent => '_epoch_fail',
   );
   $kernel->sig_child( $self->{wheel}->PID(), '_sig_child' );
+  return;
+}
+
+sub _epoch_fail {
+  my ($kernel,$self,$data) = @_[KERNEL,OBJECT,ARG0];
+  # Anything on STDERR means an error
+  return if $self->{_epoch_fail};
+  $self->{_epoch_fail} = 1;
+  $kernel->yield( '_process_' . $self->{uri}->scheme );
   return;
 }
 
 sub _sig_child {
   my ($kernel,$self) = @_[KERNEL,OBJECT];
   delete $self->{wheel};
-  $kernel->yield( '_recent', 'file' );
+  $kernel->yield( '_recent', 'file' ) unless $self->{_epoch_fail};
   $kernel->sig_handled();
 }
 
