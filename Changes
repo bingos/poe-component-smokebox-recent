@@ -1,6 +1,11 @@
 Changelog for POE::Component::SmokeBox::Recent
 ==============================================
 
+1.28  Fri Nov 26 11:32:15 GMT 2010
+  - Fallback on normal RECENT retrieval behaviour when epoch fails
+    Like in the case that someone is using a CPAN::Mini mirror
+    rather than a 'real' CPAN Mirror. Reported by Nigel Horne
+
 1.26  Mon Nov 15 23:08:14 GMT 2010
   - Added 'epoch' option for determining dists from a given
     epoch timestamp
