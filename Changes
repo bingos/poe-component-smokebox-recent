@@ -1,7 +1,10 @@
 Changelog for POE::Component::SmokeBox::Recent
 ==============================================
 
+1.30  Tue Mar  8 01:00:56 GMT 2011
 1.28  Fri Nov 26 11:32:15 GMT 2010
+  - Update required version of POE::Filter::HTTP::Parser
+
   - Fallback on normal RECENT retrieval behaviour when epoch fails
     Like in the case that someone is using a CPAN::Mini mirror
     rather than a 'real' CPAN Mirror. Reported by Nigel Horne

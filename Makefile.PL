@@ -18,7 +18,7 @@ requires 'URI' => 0;
 requires 'HTTP::Request' => 0;
 requires 'POE' => 0.38;
 requires 'POE::Component::Client::DNS' => 1.02;
-requires 'POE::Filter::HTTP::Parser' => 0.08;
+requires 'POE::Filter::HTTP::Parser' => 1.06;
 requires 'Test::POE::Client::TCP' => 0.08;
 clean_files 'network.tests';
 my $value;
