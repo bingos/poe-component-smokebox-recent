@@ -9,7 +9,7 @@ use HTTP::Request;
 use File::Spec;
 use vars qw($VERSION);
 
-$VERSION = '1.30';
+$VERSION = '1.32';
 
 sub recent {
   my $package = shift;

@@ -1,4 +1,5 @@
 Changes
+Changes.old
 examples/http.pl
 examples/retr.pl
 examples/synopsis.pl
@@ -41,5 +42,6 @@ t/06_cpantesters.t
 t/06_fileurl.t
 t/06_live_epoch.t
 t/07_epoch_fail.t
+tools/git-log.pl
 xt/99_pod.t
 xt/99_pod_coverage.t
