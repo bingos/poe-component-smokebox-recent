@@ -3,14 +3,14 @@ package POE::Component::SmokeBox::Recent::HTTP;
 use strict;
 use warnings;
 use POE qw(Filter::HTTP::Parser Component::Client::DNS);
-use Net::IP qw(ip_get_version);
+use Net::IP::Minimal qw(ip_get_version);
 use Test::POE::Client::TCP;
 use Carp qw(carp croak);
 use HTTP::Request;
 use URI;
 use vars qw($VERSION);
 
-$VERSION = '1.34';
+$VERSION = '1.36';
 
 sub spawn {
   my $package = shift;
