@@ -8,7 +8,7 @@ unless ( -e 'network.tests' ) {
 
 plan tests => 4;
 
-use POE; 
+use POE;
 
 use_ok('POE::Component::SmokeBox::Recent');
 
@@ -23,7 +23,7 @@ exit 0;
 
 sub _start {
   POE::Component::SmokeBox::Recent->recent(
-      url => 'http://cpan.hexten.net/',
+      url => 'http://www.cpan.org/',
       event => 'recent',
       context => 'Blah Blah Blah',
       epoch => ( time() - ( 60*60*24 ) ),
