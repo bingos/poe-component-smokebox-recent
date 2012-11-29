@@ -10,15 +10,15 @@ use HTTP::Request;
 use URI;
 use vars qw($VERSION);
 
-$VERSION = '1.40';
+$VERSION = '1.42';
 
 sub spawn {
   my $package = shift;
   my %opts = @_;
   $opts{lc $_} = delete $opts{$_} for keys %opts;
-  croak( "You must provide the 'uri' parameter and it must a URI object and a supported scheme\n" ) 
-	unless $opts{uri} and $opts{uri}->isa('URI') 
-	and $opts{uri}->scheme and $opts{uri}->scheme =~ /^http$/ 
+  croak( "You must provide the 'uri' parameter and it must a URI object and a supported scheme\n" )
+	unless $opts{uri} and $opts{uri}->isa('URI')
+	and $opts{uri}->scheme and $opts{uri}->scheme =~ /^http$/
 	and $opts{uri}->host;
   my $options = delete $opts{options};
   $opts{prefix} = 'http_' unless $opts{prefix};
@@ -192,41 +192,41 @@ POE::Component::SmokeBox::Recent::HTTP - an extremely minimal HTTP client
    use File::Spec;
    use POE qw(Component::SmokeBox::Recent::HTTP);
    use URI;
-   
+
    my $url = shift || die "You must provide a url parameter\n";
-   
+
    my $uri = URI->new( $url );
-   
+
    die "Unsupported scheme\n" unless $uri->scheme and $uri->scheme eq 'http';
-   
+
    $uri->path( File::Spec::Unix->catfile( $uri->path(), 'RECENT' ) );
-   
+
    POE::Session->create(
       package_states => [
    	main => [qw(_start http_sockerr http_timeout http_response)],
       ]
    );
-   
+
    $poe_kernel->run();
    exit 0;
-   
+
    sub _start {
      POE::Component::SmokeBox::Recent::HTTP->spawn(
    	uri => $uri,
      );
      return;
    }
-   
+
    sub http_sockerr {
      warn join ' ', @_[ARG0..$#_];
      return;
    }
-   
+
    sub http_timeout {
      warn $_[ARG0], "\n";
      return;
    }
-   
+
    sub http_response {
      my $http_response = $_[ARG0];
      print $http_response->as_string;
@@ -257,10 +257,10 @@ Takes a number of parameters:
 
 =head1 OUTPUT EVENTS
 
-The component sends the following events. If you have changed the C<prefix> option in C<spawn> then substitute C<http> 
+The component sends the following events. If you have changed the C<prefix> option in C<spawn> then substitute C<http>
 with the event prefix that you specified.
 
-=over 
+=over
 
 =item C<http_sockerr>
 
@@ -268,14 +268,14 @@ Generated if there is a problem connecting to the given HTTP host/address. C<ARG
 
 =item C<http_timeout>
 
-Triggered if we don't get a response from the HTTP server. 
+Triggered if we don't get a response from the HTTP server.
 
 =item C<http_response>
 
 Emitted when the transfer has finished. C<ARG0> will be a L<HTTP::Response> object. It is up to you to check the status, etc. of the
 response.
 
-=back 
+=back
 
 =head1 AUTHOR
 

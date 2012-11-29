@@ -1,13 +1,13 @@
 use strict;
 use warnings;
 use Test::More;
-use File::Spec;
+use URI::file;
 
-my $path = File::Spec->rel2abs('.');
+my $path = URI::file->new_abs();
 
 plan tests => 4;
 
-use POE; 
+use POE;
 
 use_ok('POE::Component::SmokeBox::Recent');
 
@@ -22,7 +22,7 @@ exit 0;
 
 sub _start {
   POE::Component::SmokeBox::Recent->recent(
-      url => "file://$path",
+      url => $path,
       event => 'recent',
       context => 'Blah Blah Blah',
   );

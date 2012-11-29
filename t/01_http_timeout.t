@@ -85,9 +85,9 @@ plan tests => 9;
 POE::Session->create(
    package_states => [
 	main => [qw(
-			_start 
+			_start
 			_stop
-			testd_registered 
+			testd_registered
 			testd_connected
 			testd_disconnected
 			testd_client_input
@@ -125,7 +125,7 @@ sub testd_registered {
   $uri->path( '/pub/CPAN/RECENT' );
   $uri->port( $heap->{remote_port} );
   my $ftp = POE::Component::SmokeBox::Recent::HTTP->spawn(
-	uri  => $uri, 
+	uri  => $uri,
 	timeout => 10,
   );
   isa_ok( $ftp, 'POE::Component::SmokeBox::Recent::HTTP' );

@@ -91,9 +91,9 @@ plan tests => 8 + scalar @data;
 POE::Session->create(
    package_states => [
 	main => [qw(
-			_start 
+			_start
 			_stop
-			testd_registered 
+			testd_registered
 			testd_connected
 			testd_disconnected
 			testd_client_input

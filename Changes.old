@@ -59,7 +59,7 @@ Changelog for POE::Component::SmokeBox::Recent
 
 1.01_01	Sat Jan 17 21:15:35 GMT 2009
 	- Added our own bundled miniFTP client
-	- Pod tidying. 
+	- Pod tidying.
 	- Removed dependency of PoCo-Client-FTP
 
 1.00	Wed May  7 06:08:22 BST 2008

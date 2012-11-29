@@ -8,7 +8,7 @@ use Test::POE::Client::TCP;
 use Carp qw(carp croak);
 use vars qw($VERSION);
 
-$VERSION = '1.40';
+$VERSION = '1.42';
 
 sub spawn {
   my $package = shift;
@@ -234,19 +234,19 @@ POE::Component::SmokeBox::Recent::FTP - an extremely minimal FTP client
   use warnings;
   use File::Spec;
   use POE qw(Component::SmokeBox::Recent::FTP);
-  
+
   my $site = shift || die "You must provide a site parameter\n";
   my $path = shift || '/';
-  
+
   POE::Session->create(
      package_states => [
   	main => [qw(_start ftp_sockerr ftp_error ftp_data ftp_done)],
      ]
   );
-  
+
   $poe_kernel->run();
   exit 0;
-  
+
   sub _start {
     POE::Component::SmokeBox::Recent::FTP->spawn(
   	address => $site,
@@ -254,22 +254,22 @@ POE::Component::SmokeBox::Recent::FTP - an extremely minimal FTP client
     );
     return;
   }
-  
+
   sub ftp_sockerr {
     warn join ' ', @_[ARG0..$#_];
     return;
   }
-  
+
   sub ftp_error {
     warn "Error: '" . $_[ARG0] . "'\n";
     return;
   }
-  
+
   sub ftp_data {
     print $_[ARG0], "\n";
     return;
   }
-  
+
   sub ftp_done {
     warn "Transfer complete\n";
     return;
@@ -299,10 +299,10 @@ Takes a number of parameters:
 
 =head1 OUTPUT EVENTS
 
-The component sends the following events. If you have changed the C<prefixi> option in C<spawn> then substitute C<ftp> 
+The component sends the following events. If you have changed the C<prefixi> option in C<spawn> then substitute C<ftp>
 with the event prefix that you specified.
 
-=over 
+=over
 
 =item C<ftp_sockerr>
 
@@ -320,7 +320,7 @@ One of these events will be emitted for each line of file you have specified to 
 
 Emitted when the transfer has finished.
 
-=back 
+=back
 
 =head1 AUTHOR
 

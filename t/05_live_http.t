@@ -8,7 +8,7 @@ unless ( -e 'network.tests' ) {
 
 plan tests => 4;
 
-use POE; 
+use POE;
 
 use_ok('POE::Component::SmokeBox::Recent');
 
