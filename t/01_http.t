@@ -76,6 +76,8 @@ authors/id/A/AD/ADRIANWIT/Test-DBUnit-0.19.tar.gz
 authors/id/A/AE/AECOOPER/monotone/CHECKSUMS
 authors/id/A/AJ/AJUNG/CHECKSUMS
 authors/id/A/AL/ALEXMV/CHECKSUMS
+authors/id/J/JO/JONATHAN/Perl6/CHECKSUMS
+authors/id/J/JO/JONATHAN/Perl6/NativeCall-v1.tar.gz
 );
 
 my $size = length( join "\n", @data );

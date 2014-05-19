@@ -9,7 +9,7 @@ use HTTP::Request;
 use File::Spec;
 use vars qw($VERSION);
 
-$VERSION = '1.44';
+$VERSION = '1.46';
 
 sub recent {
   my $package = shift;
@@ -20,6 +20,7 @@ sub recent {
   $opts{rss} = 0 unless $opts{rss};
   my $options = delete $opts{options};
   my $self = bless \%opts, $package;
+  $self->{recent} = [];
   $self->{uri} = URI->new( $self->{url} );
   croak "url provided is of an unsupported scheme\n"
 	unless $self->{uri}->scheme and $self->{uri}->scheme =~ /^(ht|f)tp|file$/;
@@ -78,6 +79,7 @@ sub _recent {
   $reply{error} = delete $self->{error} if $self->{error};
   $reply{context} = delete $self->{context} if $self->{context};
   $reply{url} = delete $self->{url};
+  @{ $reply{recent} } = grep { my @parts = split m!/!; $parts[3] !~ m!^perl6$!i } @{ $reply{recent} };
   my $event = delete $self->{event};
   $kernel->post( $target, $event, \%reply );
   $kernel->refcount_decrement( $target, __PACKAGE__ );

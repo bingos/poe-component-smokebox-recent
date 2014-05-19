@@ -36,6 +36,8 @@ authors/id/A/AD/ADAMK/Test-NeedsDisplay-1.07.tar.gz
 authors/id/A/AD/ADAMK/YAML-Tiny-1.36.meta
 authors/id/A/AD/ADAMK/YAML-Tiny-1.36.readme
 authors/id/A/AD/ADAMK/YAML-Tiny-1.36.tar.gz
+authors/id/J/JO/JONATHAN/Perl6/CHECKSUMS
+authors/id/J/JO/JONATHAN/Perl6/NativeCall-v1.tar.gz
 );
 
 my @tests = qw(
