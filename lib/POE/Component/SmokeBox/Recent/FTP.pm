@@ -168,6 +168,10 @@ sub _cmdc_input {
   if ( $numeric eq '226' ) {
      $kernel->yield( '_retr_done' );
   }
+  if ( $numeric eq '221' ) {
+    $self->{cmdc}->shutdown();
+    delete $self->{cmdc};
+  }
   return;
 }
 
