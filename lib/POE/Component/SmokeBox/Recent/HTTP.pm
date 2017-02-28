@@ -1,5 +1,7 @@
 package POE::Component::SmokeBox::Recent::HTTP;
 
+#ABSTRACT: an extremely minimal HTTP client
+
 use strict;
 use warnings;
 use POE qw(Filter::HTTP::Parser Component::Client::DNS);
@@ -8,9 +10,6 @@ use Test::POE::Client::TCP;
 use Carp qw(carp croak);
 use HTTP::Request;
 use URI;
-use vars qw($VERSION);
-
-$VERSION = '1.48';
 
 sub spawn {
   my $package = shift;
@@ -123,7 +122,7 @@ sub _web_connected {
   my $req = HTTP::Request->new( GET => $self->{uri}->path );
   $req->protocol( 'HTTP/1.1' );
   $req->header( 'Host', $self->{address} . ( $self->{port} ne '80' ? ":$self->{port}" : '' ) );
-  $req->user_agent( sprintf( 'POE-Component-SmokeBox-Recent-HTTP/%s (perl; N; POE; en; rv:%f)', $VERSION, $VERSION ) );
+  $req->user_agent( sprintf( 'POE-Component-SmokeBox-Recent-HTTP/%s (perl; N; POE; en; rv:%f)', $POE::Component::SmokeBox::Recent::HTTP::VERSION, $POE::Component::SmokeBox::Recent::HTTP::VERSION ) );
   $self->{web}->send_to_server( $req );
   $poe_kernel->delay( '_timeout', $self->{timeout} || 60 );
   return;
@@ -178,11 +177,8 @@ sub _shutdown {
 }
 
 'Get me that file, sucker'
-__END__
 
-=head1 NAME
-
-POE::Component::SmokeBox::Recent::HTTP - an extremely minimal HTTP client
+=pod
 
 =head1 SYNOPSIS
 
@@ -276,15 +272,5 @@ Emitted when the transfer has finished. C<ARG0> will be a L<HTTP::Response> obje
 response.
 
 =back
-
-=head1 AUTHOR
-
-Chris C<BinGOs> Williams <chris@bingosnet.co.uk>
-
-=head1 LICENSE
-
-Copyright E<copy> Chris Williams
-
-This module may be used, modified, and distributed under the same terms as Perl itself. Please see the license that came with your Perl distribution for details.
 
 =cut

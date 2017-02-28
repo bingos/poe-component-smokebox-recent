@@ -1,14 +1,13 @@
 package POE::Component::SmokeBox::Recent::FTP;
 
+#ABSTRACT: an extremely minimal FTP client
+
 use strict;
 use warnings;
 use POE qw(Filter::Line Component::Client::DNS);
 use Net::IP::Minimal qw(ip_get_version);
 use Test::POE::Client::TCP;
 use Carp qw(carp croak);
-use vars qw($VERSION);
-
-$VERSION = '1.48';
 
 sub spawn {
   my $package = shift;
@@ -225,11 +224,8 @@ sub _send_event {
 }
 
 'Get me that file, sucker'
-__END__
 
-=head1 NAME
-
-POE::Component::SmokeBox::Recent::FTP - an extremely minimal FTP client
+=pod
 
 =head1 SYNOPSIS
 
@@ -325,15 +321,5 @@ One of these events will be emitted for each line of file you have specified to 
 Emitted when the transfer has finished.
 
 =back
-
-=head1 AUTHOR
-
-Chris C<BinGOs> Williams <chris@bingosnet.co.uk>
-
-=head1 LICENSE
-
-Copyright E<copy> Chris Williams
-
-This module may be used, modified, and distributed under the same terms as Perl itself. Please see the license that came with your Perl distribution for details.
 
 =cut
