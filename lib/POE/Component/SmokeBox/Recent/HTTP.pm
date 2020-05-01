@@ -119,7 +119,7 @@ sub _connect {
 
 sub _web_connected {
   my $self = $_[OBJECT];
-  my $req = HTTP::Request->new( GET => $self->{uri}->path );
+  my $req = HTTP::Request->new( GET => $self->{uri}->path_query );
   $req->protocol( 'HTTP/1.1' );
   $req->header( 'Host', $self->{address} . ( $self->{port} ne '80' ? ":$self->{port}" : '' ) );
   $req->user_agent( sprintf( 'POE-Component-SmokeBox-Recent-HTTP/%s (perl; N; POE; en; rv:%f)', $POE::Component::SmokeBox::Recent::HTTP::VERSION, $POE::Component::SmokeBox::Recent::HTTP::VERSION ) );
